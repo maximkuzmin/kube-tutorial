@@ -16,6 +16,7 @@ data:
   database_name: checklister_prod
   database_hostname: "postgres"
   database_pool_size: "10"
+  phx_host: "127.0.0.1"
 
 ---
 apiVersion: apps/v1
@@ -57,16 +58,17 @@ spec:
                 name: checklister-configmap
                 key: database_pool_size
 
+          - name: PHX_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: checklister-configmap
+                key: phx_host
+
           - name: SECRET_KEY_BASE
             valueFrom:
               secretKeyRef:
                 name: checklister-secret
                 key: secret_key_base
-          - name: PHX_HOST
-            valueFrom:
-              secretKeyRef:
-                name: checklister-secret
-                key: phx_host
 
           - name: DATABASE_USERNAME
             valueFrom:
