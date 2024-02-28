@@ -71,6 +71,7 @@ spec:
       initContainers:
         - name: checklister-init-migrate
           image: maximkuzmin/checklister:latest
+          imagePullPolicy: "Always"
           command: ["/app/bin/migrate"]
           resources:
             limits:
@@ -97,11 +98,11 @@ spec:
       containers:
       - name: checklister
         image: maximkuzmin/checklister:latest
+        imagePullPolicy: "Always"
         resources:
           limits:
             memory: "256Mi"
             cpu: "500m"
-        
         envFrom:
           - configMapRef:
               name: checklister-configmap
@@ -121,3 +122,16 @@ spec:
                 key: POSTGRES_PASSWORD
         ports:
         - containerPort: 4000
+        livenessProbe:
+          httpGet:
+            path: "/liveness"
+            port: 4000
+          initialDelaySeconds: 5
+          periodSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: "/readiness"
+            port: 4000
+          initialDelaySeconds: 5
+          periodSeconds: 3
+
