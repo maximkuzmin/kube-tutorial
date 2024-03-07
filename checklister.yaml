@@ -131,7 +131,7 @@ spec:
         path: "/"
         backend:
           service:
-            name: checklister
+            name: checklister-service
             port:
               number: 4000
 
